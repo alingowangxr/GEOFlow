@@ -1,5 +1,7 @@
 # 🚀 GEOFlow: Generative Engine Optimization Flow
 
+[English](./docs/readme/README_en.md) | [繁體中文](./README.md) | [Español](./docs/readme/README_es.md) | [日本語](./docs/readme/README_ja.md) | [Português](./docs/readme/README_pt_BR.md) | [Русский](./docs/readme/README_ru.md)
+
 **GEOFlow** 是一個專為 **GEO (生成式引擎優化)** 與 **現代 SEO** 打造的開源智能內容工程系統。
 
 在 AI 搜尋引擎（如 SearchGPT, Perplexity, Google SGE）崛起的時代，傳統的內容堆砌已失去效力。GEOFlow 通過系統化的數據處理、RAG (檢索增強生成) 技術以及語義網路構建，將原始數據轉化為具備「高採信度」與「結構化語義」的 AI 優化內容。

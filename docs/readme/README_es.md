@@ -1,5 +1,7 @@
 # 🚀 GEOFlow: Generative Engine Optimization Flow
 
+[English](./README_en.md) | [繁體中文](../../README.md) | [Español](./README_es.md) | [日本語](./README_ja.md) | [Português](./README_pt_BR.md) | [Русский](./README_ru.md)
+
 **GEOFlow** es un sistema inteligente de ingeniería de contenidos de código abierto diseñado específicamente para **GEO (Generative Engine Optimization)** y **SEO Moderno**.
 
 En la era de los motores de búsqueda de IA (como SearchGPT, Perplexity, Google SGE), el relleno de contenido tradicional ha perdido su eficacia. GEOFlow transforma los datos brutos en contenido optimizado para IA con "alta credibilidad" y "semántica estructurada" a través del procesamiento sistemático de datos, la tecnología RAG (Generación Aumentada por Recuperación) y la construcción de redes semánticas.
