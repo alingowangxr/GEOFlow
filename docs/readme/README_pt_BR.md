@@ -4,53 +4,49 @@
 
 **GEOFlow** é um sistema inteligente de engenharia de conteúdo de código aberto projetado especificamente para **GEO (Generative Engine Optimization)** e **SEO Moderno**.
 
-Na era dos mecanismos de busca de IA (como SearchGPT, Perplexity, Google SGE), o preenchimento de conteúdo tradicional perdeu sua eficácia. O GEOFlow transforma dados brutos em conteúdo otimizado para IA com "alta credibilidade" e "semântica estruturada" por meio de processamento sistemático de dados, tecnologia RAG (Geração Aumentada por Recuperação) e construção de redes semânticas.
+Na era dos mecanismos de busca de IA (como SearchGPT, Perplexity, Google SGE), a "autoridade" e a "leitura por máquina" do conteúdo tornaram-se críticas para a aquisição de tráfego. O GEOFlow transforma materiais brutos em conteúdo de alta qualidade, fundamentado em fatos, semanticamente rico e com carregamento ultrarrápido, por meio de processamento sistemático de dados, tecnologia RAG de ponta e construção de redes semânticas.
 
 ---
 
 ## 🍴 Informações de Fork
-Este projeto é um fork de [yaojingang/GEOFlow](https://github.com/yaojingang/GEOFlow), com otimizações profundas e melhorias funcionais.
+Este projeto é um fork de [yaojingang/GEOFlow](https://github.com/yaojingang/GEOFlow), com otimizações profundas e melhorias funcionais de nível industrial.
 
 ---
 
-## 🔥 Por que escolher o GEOFlow?
+## 🌟 Matriz de Recursos Principais
 
-O GEOFlow é mais do que apenas um CMS; é uma **Fábrica de Conteúdo de IA**. Comparado às ferramentas tradicionais, ele foi profundamente reforçado em "autoridade factual" e "leitura por máquina".
+### 1. Mecanismo RAG (Geração Aumentada por Recuperação) Avançado
+*   **Busca Híbrida:** Combina a busca semântica `pgvector` com a busca de texto completo `tsvector` do PostgreSQL para capturar com precisão a intenção do usuário e palavras-chave centrais.
+*   **Algoritmo de Fusão RRF:** Emprega o algoritmo Reciprocal Rank Fusion de nível industrial para equilibrar os resultados da busca e eliminar completamente as alucinações da IA.
+*   **Citação e Sourcing:** A IA marca automaticamente as notas de rodapé (ex: `[^1]`) e o frontend gera uma lista de referências clicáveis, atendendo aos requisitos de autoridade E-E-A-T do Google.
+*   **Processamento Inteligente de Materiais:** Suporta upload de PDF/documentos e rastreamento de URL com fragmentação e vetorização automática de alta qualidade.
 
-### Principais Recursos:
+### 2. Web Semântica e Otimização GEO
+*   **Mecanismo de Entidades JSON-LD:** Extrai automaticamente entidades (Pessoa, Organização, Local, etc.) e injeta dados estruturados Schema.org Graph para interagir proativamente com os gráficos de conhecimento dos mecanismos de busca.
+*   **Links Internos Semânticos:** Constrói automaticamente "Clusters de Tópicos" baseados na similaridade de vetores, alcançando links semânticos de alta relevância entre artigos.
+*   **Snippets Inteligentes e Meta:** Gera automaticamente descrições Meta, palavras-chave e resumos de conteúdo compatíveis com SEO.
 
-#### 1. Mecanismo RAG de Primeira Classe: Busca Híbrida
-*   **Semântica + Precisa:** Combina a busca semântica `pgvector` com a busca de texto completo `tsvector` do PostgreSQL.
-*   **Algoritmo de Fusão RRF:** Emprega o algoritmo RRF (Reciprocal Rank Fusion) de nível industrial para garantir que o conhecimento de referência recuperado pela IA seja preciso e semanticamente coerente, eliminando completamente as alucinações da IA.
+### 3. Orquestração de Materiais e Tarefas
+*   **Gestão Centralizada:** Bibliotecas integradas para títulos, palavras-chave, imagens e sistemas de gestão de autores.
+*   **Tarefas em Lote de IA:** Suporta tarefas em loop, configurações de intervalo de publicação e roteamento automático multimodelo.
+*   **Suporte Multimodelo:** Compatível com todos os principais LLMs via protocolo OpenAI, suportando estratégias de failover.
+*   **Gestão do Ciclo de Vida:** Abrange todo o processo, desde a geração de rascunhos e revisão manual/auto até a publicação agendada.
 
-#### 2. Autoridade Factual: Sistema de Citação e Sourcing
-*   **Notas de Rodapé Automáticas:** A IA marca automaticamente as notas de rodapé (ex: `[^1]`) com base no conhecimento de referência durante a geração do conteúdo.
-*   **Verificabilidade:** O frontend gera automaticamente uma lista de "Referências" com funcionalidade de salto bidirecional, melhorando significativamente a autoridade do conteúdo nas avaliações E-E-A-T do Google.
-
-#### 3. Construção de Rede Semântica: Etiquetagem de Entidades JSON-LD Automatizada
-*   **Amigável ao Gráfico de Conhecimento:** Extrai automaticamente entidades de "Pessoa, Organização, Lugar, Tópico" dos artigos.
-*   **Gráfico Schema.org:** Injeta dinamicamente dados estruturados JSON-LD complexos para declarar proativamente a estrutura semântica do conteúdo aos mecanismos de busca.
-
-#### 4. Clusters de Tópicos: Rede de Links Internos Semânticos
-*   **Associação por Vetores:** Constrói automaticamente redes de links internos baseadas na similaridade de vetores.
-*   **Transferência de Autoridade:** Constrói poderosos Clusters de Tópicos por meio de links internos de alta relevância, fazendo com que os mecanismos de busca vejam seu site como um especialista em áreas específicas.
-
-#### 5. Desempenho Extremo: Otimização Inteligente de Mídia (Edge Performance)
-*   **Formatos Modernos:** As imagens são convertidas automaticamente para os formatos WebP/AVIF.
-*   **Renderização Responsiva:** Usa a tag `<picture>` para implementar o carregamento prioritário de WebP, otimizando muito os indicadores Core Web Vitals (LCP).
+### 4. SEO Técnico e Desempenho Extremo
+*   **Otimização Inteligente de Mídia:** Imagens são convertidas automaticamente para o formato WebP e renderizadas usando a tag `<picture>` para carregamento responsivo, melhorando muito os indicadores LCP.
+*   **Sitemap Dinâmico:** Gera automaticamente sitemaps XML baseados no peso do conteúdo para guiar os rastreadores ao conteúdo principal.
+*   **Monitoramento em Tempo Real:** Integrado ao Laravel Horizon para monitoramento visualizado de filas de tarefas e rastreamento de batimentos cardíacos.
 
 ---
 
 ## 🛠️ Arquitetura Técnica
 
-O GEOFlow é construído sobre a pilha de tecnologia mais recente, garantindo desempenho e escalabilidade:
-
 -   **Framework Principal:** [Laravel 12](https://laravel.com/) (PHP 8.2+)
--   **Banco de Dados:** PostgreSQL + **pgvector** (Armazenamento de vetores)
--   **Processamento Assíncrono:** Redis + **Laravel Horizon** (Agendamento e monitoramento de tarefas)
--   **Integração de IA:** SDK `laravel/ai` (Suporta todos os LLMs compatíveis com OpenAI)
--   **Comunicação em Tempo Real:** Laravel Reverb (Feedback de progresso em tempo real via WebSocket)
--   **Desempenho Frontend:** TailwindCSS 4 + Vite
+-   **Banco de Dados:** PostgreSQL + **pgvector** (Hub de Dados Vetoriais)
+-   **Processamento Assíncrono:** Redis + **Laravel Horizon** (Filas de tarefas de alto desempenho)
+-   **AI SDK:** Pacote oficial `laravel/ai`
+-   **Tempo Real:** Laravel Reverb (WebSocket)
+-   **Frontend:** TailwindCSS 4 + Vite
 
 ---
 
@@ -58,8 +54,8 @@ O GEOFlow é construído sobre a pilha de tecnologia mais recente, garantindo de
 
 ### Requisitos do Ambiente
 - PHP 8.2+
-- PostgreSQL (com a extensão `pgvector` instalada)
-- Redis
+- PostgreSQL (com extensão `pgvector`)
+- Redis 6.2+
 - Node.js & NPM
 
 ### Passos de Instalação
@@ -71,35 +67,24 @@ git clone https://github.com/alingowangxr/GEOFlow.git && cd GEOFlow
 composer run setup
 
 # 3. Configurar variáveis de ambiente
-# Edite o arquivo .env, configure DB_CONNECTION=pgsql e seu AI_API_KEY
+# Edite .env, configure DB_CONNECTION=pgsql e sua AI_API_KEY
 ```
 
-### Desenvolvimento e Execução
+### Iniciar Desenvolvimento
 ```bash
-# Inicie o servidor, o ouvinte de fila e o Vite simultaneamente
 npm run dev
 ```
 
 ---
 
-## 📈 Visão Geral do Fluxo de Trabalho
-
-1.  **Importar Materiais:** Carregue PDFs, documentos ou URLs; o sistema os divide e vetoriza automaticamente na base de conhecimento.
-2.  **Orquestrar Tarefas:** Defina modelos de Prompt, roteamento de modelos e intervalos de publicação.
-3.  **Geração Inteligente:** Agentes de IA recuperam contextos híbridos e geram conteúdo Markdown com marcadores de citação.
-4.  **Melhoria Semântica:** Extraia automaticamente entidades, gere vetores de artigos e calcule links internos semânticos.
-5.  **Distribuição Automática:** O conteúdo é publicado automaticamente por meio de modelos de tema otimizados para SEO e os Sitemaps dinâmicos são atualizados.
-
----
-
 ## 🗺️ Roadmap
-- [x] Busca Híbrida com Fusão RRF
-- [x] Sistema de Citação e Sourcing
+- [x] Busca Híbrida e Algoritmo RRF
+- [x] Citações e Notas de Rodapé Bidirecionais
 - [x] Etiquetagem de Entidades JSON-LD Automatizada
-- [x] Mecanismo de Recomendação de Links Internos Semânticos
+- [x] Mecanismo de Recomendação de Links Semânticos
 - [x] Otimização Inteligente de Mídia WebP/AVIF
-- [ ] Push de API multiplataforma (WordPress, Webflow)
-- [ ] Geração de Conteúdo Multimodal (Geração automática de Vídeo/Áudio correspondente)
+- [ ] Publicador de API Multiplataforma (WordPress/Webflow)
+- [ ] Geração de Conteúdo Multimodal (Texto para Vídeo)
 
 ---
 

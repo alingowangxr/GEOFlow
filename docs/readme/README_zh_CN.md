@@ -4,53 +4,49 @@
 
 **GEOFlow** 是一个专为 **GEO (生成式引擎优化)** 与 **现代 SEO** 打造的开源智能内容工程系统。
 
-在 AI 搜索引擎（如 SearchGPT, Perplexity, Google SGE）崛起的时代，传统的内容堆砌已失去效力。GEOFlow 通过系统化的数据处理、RAG (检索增强生成) 技术以及语义网络构建，将原始数据转化为具备“高采信度”与“结构化语义”的 AI 优化内容。
+在 AI 搜索引擎（如 SearchGPT, Perplexity, Google SGE）崛起的时代，内容的“权威性”与“机器可读性”已成为获取流量的关键。GEOFlow 通过系统化的数据处理、顶尖的 RAG 技术与语义网络构建，将原始素材转化为具备事实支撑、语义丰富且极速加载的优质内容。
 
 ---
 
 ## 🍴 Fork 说明
-本项目 Fork 自 [yaojingang/GEOFlow](https://github.com/yaojingang/GEOFlow)，并在其基础上进行了深度优化与功能增强。
+本项目 Fork 自 [yaojingang/GEOFlow](https://github.com/yaojingang/GEOFlow)，并在其基础上进行了深度优化与工业级功能增强。
 
 ---
 
-## 🔥 为什么选择 GEOFlow？
+## 🌟 核心功能矩阵
 
-GEOFlow 不仅仅是一个 CMS，它是一个 **AI 内容工厂**。相比于传统工具，它在“事实权威性”与“机器可读性”上进行了深度强化。
+### 1. 顶尖 RAG (检索增强生成) 引擎
+*   **混合检索 (Hybrid Search):** 同时结合 `pgvector` 语义向量搜索与 PostgreSQL `tsvector` 全文检索，精准捕捉用户意图与核心关键词。
+*   **RRF 融合算法:** 采用工业级 Reciprocal Rank Fusion 算法平衡检索结果，彻底消除 AI 幻觉。
+*   **引用溯源系统 (Citation):** AI 自动标注脚注（如 `[^1]`），前端自动生成可跳转的参考文献列表，满足 Google E-E-A-T 权威性要求。
+*   **智能素材处理:** 支持 PDF、文档上传及 URL 抓取，系统自动进行高质量分块 (Chunking) 与向量化。
 
-### 核心强势功能：
+### 2. 语义网络与 GEO 优化
+*   **JSON-LD 实体引擎:** 自动提取文章中的人物、组织、地点等实体，并注入 Schema.org Graph 结构化数据，主动与搜索引擎知识图谱对接。
+*   **语义内链网络 (Semantic Linking):** 基于向量相似度自动构建“主题集群 (Topic Clusters)”，实现文章间的高相关性语义链接。
+*   **智能摘要与 Meta:** 自动生成符合 SEO 标准的 Meta 描述、核心关键词与内容摘要。
 
-#### 1. 顶尖 RAG 引擎：混合检索 (Hybrid Search)
-*   **语义 + 精确：** 同时结合 `pgvector` 语义搜索与 PostgreSQL `tsvector` 全文检索。
-*   **RRF 融合算法：** 采用工业级 RRF (Reciprocal Rank Fusion) 算法，确保 AI 获取的参考知识既精确又具备语义连贯性，从而彻底消除 AI 幻觉。
+### 3. 素材与任务编排体系
+*   **集中化管理:** 内置标题库、关键词库、图片库及作者管理系统。
+*   **AI 批量任务:** 支持循环任务 (Loop)、发布间隔设置及多模型自动路由。
+*   **多模型支持:** 兼容 OpenAI 协议的所有主流大模型，支持故障转移 (Failover) 策略。
+*   **全生命周期管理:** 涵盖草稿生成、人工/自动审核、定时发布的全流程。
 
-#### 2. 事实权威性：引用溯源系统 (Citation & Sourcing)
-*   **自动脚注：** AI 在生成内容时会自动根据参考知识标注脚注（如 `[^1]`）。
-*   **可验证性：** 前端自动生成具备双向跳转功能的“参考文献”列表，极大提升内容在 Google E-E-A-T 评分中的权威度。
-
-#### 3. 语义网络构建：自动化 JSON-LD 实体标注
-*   **知识图谱友好：** 自动提取文章中的“人物、组织、地点、话题”实体。
-*   **Schema.org Graph：** 动态注入复杂的 JSON-LD 结构化数据，主动向搜索引擎宣告内容的语义结构。
-
-#### 4. 主题集群：语义内链网络 (Topic Clusters)
-*   **向量关联：** 基于向量相似度自动构建文章间的内链网络。
-*   **权威传递：** 通过高相关性的内链链接，构建强大的主题集群，让搜索引擎将您的站点视为特定领域的专家。
-
-#### 5. 极致性能：智能媒体优化 (Edge Performance)
-*   **现代格式：** 图片自动转换为 WebP/AVIF 格式。
-*   **响应式渲染：** 采用 `<picture>` 标签实现 WebP 优先加载，极大优化 Core Web Vitals (LCP) 指标。
+### 4. 技术 SEO 与极致效能
+*   **智能媒体优化:** 图片自动转换为 WebP 格式，并采用 `<picture>` 标签实现响应式渲染，极大化提升 LCP 指标。
+*   **动态 Sitemap:** 根据内容权重自动生成的 XML 站点地图，主动引导爬虫抓取核心内容。
+*   **实时监控:** 集成 Laravel Horizon，提供可视化的任务队列监控与心跳追踪。
 
 ---
 
 ## 🛠️ 技术架构
 
-GEOFlow 基于最新的技术栈构建，确保效能与可扩展性：
-
 -   **核心框架:** [Laravel 12](https://laravel.com/) (PHP 8.2+)
--   **数据库:** PostgreSQL + **pgvector** (向量存储)
--   **异步处理:** Redis + **Laravel Horizon** (任务调度与监控)
--   **AI 集成:** `laravel/ai` SDK (支持 OpenAI 兼容的所有 LLMs)
--   **实时通讯:** Laravel Reverb (WebSocket 实时进度回传)
--   **前端性能:** TailwindCSS 4 + Vite
+-   **数据库:** PostgreSQL + **pgvector** (向量数据中心)
+-   **异步处理:** Redis + **Laravel Horizon** (高性能任务队列)
+-   **AI SDK:** `laravel/ai` 官方套件
+-   **实时通讯:** Laravel Reverb (WebSocket)
+-   **前端开发:** TailwindCSS 4 + Vite
 
 ---
 
@@ -59,7 +55,7 @@ GEOFlow 基于最新的技术栈构建，确保效能与可扩展性：
 ### 环境要求
 - PHP 8.2+
 - PostgreSQL (需安装 `pgvector` 扩展)
-- Redis
+- Redis 6.2+
 - Node.js & NPM
 
 ### 安装步骤
@@ -71,35 +67,24 @@ git clone https://github.com/alingowangxr/GEOFlow.git && cd GEOFlow
 composer run setup
 
 # 3. 配置环境变量
-# 编辑 .env 文件，配置 DB_CONNECTION=pgsql 以及你的 AI_API_KEY
+# 编辑 .env，配置 DB_CONNECTION=pgsql 及你的 AI_API_KEY
 ```
 
-### 开发与执行
+### 启动开发环境
 ```bash
-# 同时启动服务、队列监控与 Vite
 npm run dev
 ```
 
 ---
 
-## 📈 工作流概述
-
-1.  **导入素材:** 上传 PDF、文档或 URL，系统自动分块并向量化进入知识库。
-2.  **编排任务:** 设置 Prompt 模板、模型路由与发布间隔。
-3.  **智能生成:** AI 代理 (Agents) 检索混合上下文，生成带有引用标注的 Markdown 内容。
-4.  **语义增强:** 自动提取实体、生成文章向量、计算语义内链。
-5.  **自动分发:** 内容自动通过 SEO 优化的主题模板发布，并更新动态 Sitemap。
-
----
-
 ## 🗺️ 路线图 (Roadmap)
-- [x] 混合检索 (Hybrid Search) 与 RRF 融合
-- [x] 引用溯源系统 (Citation System)
+- [x] 混合检索与 RRF 算法
+- [x] 引用溯源与双向脚注
 - [x] 自动化 JSON-LD 实体标注
 - [x] 语义内链推荐引擎
 - [x] WebP/AVIF 智能媒体优化
-- [ ] 跨平台 API 推送 (WordPress, Webflow)
-- [ ] 多模态内容生成 (自动生成与内容匹配的影片/音频)
+- [ ] 跨平台 API 发布器 (WordPress/Webflow)
+- [ ] 多模态内容生成 (图文转视频)
 
 ---
 
