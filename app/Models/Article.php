@@ -32,6 +32,9 @@ class Article extends Model
         'is_hot',
         'is_featured',
         'published_at',
+        'references',
+        'entities',
+        'embedding_vector',
     ];
 
     protected function casts(): array
@@ -45,6 +48,8 @@ class Article extends Model
             'is_hot' => 'boolean',
             'is_featured' => 'boolean',
             'published_at' => 'datetime',
+            'references' => 'array',
+            'entities' => 'array',
         ];
     }
 

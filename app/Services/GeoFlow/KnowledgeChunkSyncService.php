@@ -27,6 +27,44 @@ class KnowledgeChunkSyncService
     public function __construct(private readonly ApiKeyCrypto $apiKeyCrypto) {}
 
     /**
+     * 为单个文本片段生成向量字面量（pgvector 格式）。
+     */
+    public function generateSingleVectorLiteral(string $text): ?string
+    {
+        $text = trim($text);
+        if ($text === '' || ! $this->canStoreEmbeddingVector()) {
+            return null;
+        }
+
+        $embeddingMetadata = $this->resolveEmbeddingMetadata();
+        if ($embeddingMetadata === null) {
+            return null;
+        }
+
+        $providerName = OpenAiRuntimeProvider::registerProvider(
+            'embedding_single',
+            'openai',
+            (string) $embeddingMetadata['api_url'],
+            (string) $embeddingMetadata['api_key']
+        );
+
+        try {
+            $response = Embeddings::for([$text])
+                ->timeout(45)
+                ->generate($providerName, (string) $embeddingMetadata['model_name']);
+            
+            $rawVector = $this->normalizeEmbeddingVector($response->embeddings[0] ?? null);
+            if ($rawVector === null) {
+                return null;
+            }
+
+            return $this->vectorLiteral($this->padVector($rawVector, $this->embeddingStorageDimensions()));
+        } catch (Throwable) {
+            return null;
+        }
+    }
+
+    /**
      * 将知识库正文重建为 chunks，并同步向量相关字段。
      */
     public function sync(int $knowledgeBaseId, string $content): int

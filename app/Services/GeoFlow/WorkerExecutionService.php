@@ -32,7 +32,9 @@ class WorkerExecutionService
      */
     public function __construct(
         private readonly ApiKeyCrypto $apiKeyCrypto,
-        private readonly KnowledgeChunkSyncService $knowledgeChunkSyncService
+        private readonly KnowledgeChunkSyncService $knowledgeChunkSyncService,
+        private readonly EntityExtractionService $entityExtractionService,
+        private readonly ImageOptimizationService $imageOptimizationService
     ) {}
 
     /**
@@ -75,7 +77,10 @@ class WorkerExecutionService
         $prompt = $task->prompt_id ? Prompt::query()->find((int) $task->prompt_id) : null;
 
         $keyword = (string) ($titleRow->keyword ?? '');
-        $knowledgeContext = $this->resolveKnowledgeContext($task, (string) $titleRow->title, $keyword);
+        $knowledgeResult = $this->resolveKnowledgeContext($task, (string) $titleRow->title, $keyword);
+        $knowledgeContext = $knowledgeResult['text'];
+        $referencedChunks = $knowledgeResult['chunks'];
+
         $contentPrompt = $this->buildContentPrompt((string) $titleRow->title, $keyword, $prompt?->content, $knowledgeContext);
         $generation = $this->generateContentWithModelSelection($task, $contentPrompt);
         $aiModel = $generation['model'];
@@ -84,13 +89,21 @@ class WorkerExecutionService
         $content = $imageResult['content'];
         $selectedImages = $imageResult['images'];
         $excerpt = $this->buildExcerpt($content);
+
+        // Task 2.1: 提取语义实体
+        $apiKey = $this->decryptApiKey((string) ($aiModel->getRawOriginal('api_key') ?? ''));
+        $entities = $this->entityExtractionService->extract($content, $aiModel, $apiKey);
+
+        // Task 2.2: 生成文章级别的向量 (用于语义内链和主题集群)
+        $articleVector = $this->knowledgeChunkSyncService->generateSingleVectorLiteral((string) $titleRow->title."\n".mb_substr($content, 0, 500));
+
         $workflow = [
             'status' => 'draft',
             'review_status' => (int) ($task->need_review ?? 1) === 1 ? 'pending' : 'approved',
             'published_at' => null,
         ];
 
-        $articleId = DB::transaction(function () use ($task, $titleRow, $author, $category, $keyword, $content, $excerpt, $workflow, $selectedImages): int {
+        $articleId = DB::transaction(function () use ($task, $titleRow, $author, $category, $keyword, $content, $excerpt, $workflow, $selectedImages, $referencedChunks, $entities, $articleVector): int {
             $freshTask = Task::query()
                 ->whereKey((int) $task->id)
                 ->lockForUpdate()
@@ -119,6 +132,9 @@ class WorkerExecutionService
                 'is_ai_generated' => 1,
                 'published_at' => $workflow['published_at'],
                 'view_count' => 0,
+                'references' => $referencedChunks,
+                'entities' => $entities,
+                'embedding_vector' => $articleVector,
             ]);
             if ($selectedImages !== []) {
                 foreach ($selectedImages as $position => $image) {
@@ -566,10 +582,10 @@ class WorkerExecutionService
     private function finalPromptInstruction(string $prompt): string
     {
         if ($this->isLikelyEnglishPrompt($prompt)) {
-            return 'Please output only the final article body in Markdown. Do not repeat the prompt or output placeholders.';
+            return 'Please output only the final article body in Markdown. Important: Whenever you use information from the provided "Reference knowledge", you must cite it using a footnote marker like [^1], [^2], corresponding to the index of the knowledge chunk. Do not output placeholders.';
         }
 
-        return '请直接输出最终文章正文（Markdown），不要重复提示词、不要输出占位符。';
+        return '请直接输出最终文章正文（Markdown）。重要：凡是引用或参考了提供的“参考知识”中的内容，请务必在对应句末使用 [^数字] 形式标注脚注（如 [^1]、[^2]），对应知识片段的编号。不要重复提示词、不要输出占位符。';
     }
 
     private function isLikelyEnglishPrompt(string $prompt): bool
@@ -582,24 +598,27 @@ class WorkerExecutionService
 
     /**
      * 按任务配置检索知识库上下文并回填到 {{Knowledge}}。
+     *
+     * @return array{text:string, chunks:list<array{id:int|null, index:int, content:string}>}
      */
-    private function resolveKnowledgeContext(Task $task, string $title, string $keyword): string
+    private function resolveKnowledgeContext(Task $task, string $title, string $keyword): array
     {
+        $emptyResult = ['text' => '', 'chunks' => []];
         $knowledgeBaseId = (int) ($task->knowledge_base_id ?? 0);
         if ($knowledgeBaseId <= 0) {
-            return '';
+            return $emptyResult;
         }
 
         $knowledgeBase = KnowledgeBase::query()
             ->whereKey($knowledgeBaseId)
             ->first(['id', 'content']);
         if (! $knowledgeBase) {
-            return '';
+            return $emptyResult;
         }
 
         $content = trim((string) ($knowledgeBase->content ?? ''));
         if ($content === '') {
-            return '';
+            return $emptyResult;
         }
 
         $chunkCount = KnowledgeChunk::query()->where('knowledge_base_id', $knowledgeBaseId)->count();
@@ -608,33 +627,44 @@ class WorkerExecutionService
         }
 
         $query = trim($title."\n".$keyword);
-        $context = $this->fetchKnowledgeContextFromChunks($knowledgeBaseId, $query, 4, 2400);
-        if ($context !== '') {
-            return $context;
+        $contextResult = $this->fetchKnowledgeContextFromChunks($knowledgeBaseId, $query, 4, 2400);
+        if ($contextResult['text'] !== '') {
+            return $contextResult;
         }
 
-        return mb_strlen($content, 'UTF-8') > 2400 ? mb_substr($content, 0, 2400, 'UTF-8') : $content;
+        $text = mb_strlen($content, 'UTF-8') > 2400 ? mb_substr($content, 0, 2400, 'UTF-8') : $content;
+        return [
+            'text' => $text,
+            'chunks' => [
+                ['id' => null, 'index' => 1, 'content' => mb_substr($text, 0, 100)]
+            ]
+        ];
     }
 
     /**
      * 从 knowledge_chunks 中检索相关片段。
+     *
+     * @return array{text:string, chunks:list<array{id:int|null, index:int, content:string}>}
      */
-    private function fetchKnowledgeContextFromChunks(int $knowledgeBaseId, string $query, int $limit, int $maxChars): string
+    private function fetchKnowledgeContextFromChunks(int $knowledgeBaseId, string $query, int $limit, int $maxChars): array
     {
         if (trim($query) !== '') {
-            $vectorRows = $this->fetchKnowledgeChunksByPgvector($knowledgeBaseId, $query, max($limit * 3, 8));
-            if ($vectorRows !== []) {
-                return $this->composeKnowledgeContext($vectorRows, $limit, $maxChars);
+            $vectorResults = $this->fetchKnowledgeChunksByPgvector($knowledgeBaseId, $query, max($limit * 3, 12));
+            $fulltextResults = $this->fetchKnowledgeChunksByFulltext($knowledgeBaseId, $query, max($limit * 3, 12));
+            
+            if ($vectorResults !== [] || $fulltextResults !== []) {
+                $mergedResults = $this->hybridSearchRRF($vectorResults, $fulltextResults, 60);
+                return $this->composeKnowledgeContext($mergedResults, $limit, $maxChars);
             }
         }
 
         $rows = KnowledgeChunk::query()
             ->where('knowledge_base_id', $knowledgeBaseId)
             ->orderBy('chunk_index')
-            ->get(['chunk_index', 'content', 'embedding_json'])
+            ->get(['id', 'chunk_index', 'content', 'embedding_json'])
             ->all();
         if ($rows === []) {
-            return '';
+            return ['text' => '', 'chunks' => []];
         }
 
         $queryTerms = $this->termFrequencies($query);
@@ -654,6 +684,7 @@ class WorkerExecutionService
             $score = ($vectorScore * 0.75) + ($lexicalScore * 0.25);
 
             $scored[] = [
+                'id' => (int) ($row->id ?? 0),
                 'chunk_index' => (int) ($row->chunk_index ?? 0),
                 'content' => $content,
                 'score' => $score,
@@ -667,6 +698,92 @@ class WorkerExecutionService
         });
 
         return $this->composeKnowledgeContext($scored, $limit, $maxChars);
+    }
+
+    /**
+     * 混合检索 RRF (Reciprocal Rank Fusion) 算法。
+     *
+     * @param list<array{id:int,chunk_index:int,content:string,score:float}> $vectorResults
+     * @param list<array{id:int,chunk_index:int,content:string,score:float}> $fulltextResults
+     * @return list<array{id:int,chunk_index:int,content:string,score:float}>
+     */
+    private function hybridSearchRRF(array $vectorResults, array $fulltextResults, int $k = 60): array
+    {
+        $scores = []; // [id => rrf_score]
+        $idToData = [];
+
+        foreach ($vectorResults as $rank => $item) {
+            $id = $item['id'];
+            $scores[$id] = ($scores[$id] ?? 0.0) + 1.0 / ($k + $rank + 1);
+            $idToData[$id] = $item;
+        }
+
+        foreach ($fulltextResults as $rank => $item) {
+            $id = $item['id'];
+            $scores[$id] = ($scores[$id] ?? 0.0) + 1.0 / ($k + $rank + 1);
+            if (!isset($idToData[$id])) {
+                $idToData[$id] = $item;
+            }
+        }
+
+        $final = [];
+        foreach ($scores as $id => $rrfScore) {
+            $data = $idToData[$id];
+            $data['score'] = $rrfScore;
+            $final[] = $data;
+        }
+
+        usort($final, static fn (array $a, array $b): int => $b['score'] <=> $a['score']);
+
+        return $final;
+    }
+
+    /**
+     * 全文检索方法 (PostgreSQL tsvector)。
+     *
+     * @return list<array{id:int,chunk_index:int,content:string,score:float}>
+     */
+    private function fetchKnowledgeChunksByFulltext(int $knowledgeBaseId, string $query, int $candidateLimit): array
+    {
+        if (DB::getDriverName() !== 'pgsql') {
+            return [];
+        }
+
+        // 简单的关键词清洗
+        $cleanQuery = preg_replace('/[^\p{L}\p{N} ]+/u', ' ', $query) ?: '';
+        $tsQuery = implode(' & ', array_filter(explode(' ', $cleanQuery)));
+        if ($tsQuery === '') {
+            return [];
+        }
+
+        try {
+            $rows = DB::select(
+                "
+                    SELECT id, chunk_index, content,
+                           ts_rank_cd(search_vector, to_tsquery('simple', ?)) AS rank_score
+                    FROM knowledge_chunks
+                    WHERE knowledge_base_id = ?
+                      AND search_vector @@ to_tsquery('simple', ?)
+                    ORDER BY rank_score DESC, chunk_index ASC
+                    LIMIT ?
+                ",
+                [$tsQuery, $knowledgeBaseId, $tsQuery, max(1, $candidateLimit)]
+            );
+
+            $results = [];
+            foreach ($rows as $row) {
+                $results[] = [
+                    'id' => (int) ($row->id ?? 0),
+                    'chunk_index' => (int) ($row->chunk_index ?? 0),
+                    'content' => (string) ($row->content ?? ''),
+                    'score' => (float) ($row->rank_score ?? 0.0),
+                ];
+            }
+
+            return $results;
+        } catch (Throwable) {
+            return [];
+        }
     }
 
     /**
@@ -699,6 +816,10 @@ class WorkerExecutionService
             if ($path === '') {
                 continue;
             }
+
+            // Task 3.1: 智能媒体优化 (生成 WebP)
+            $this->imageOptimizationService->optimize($path);
+
             $path = ImageUrlNormalizer::toPublicUrl($path);
             $alt = ImageUrlNormalizer::readableAlt((string) ($image->original_name ?? ''));
             $markdownBlocks[] = '!['.($alt !== '' ? $alt : 'image').']('.$path.')';
@@ -945,7 +1066,7 @@ class WorkerExecutionService
 
         $rows = DB::select(
             '
-                SELECT chunk_index, content,
+                SELECT id, chunk_index, content,
                        (embedding_vector <=> CAST(? AS vector)) AS vector_distance
                 FROM knowledge_chunks
                 WHERE knowledge_base_id = ?
@@ -964,6 +1085,7 @@ class WorkerExecutionService
             }
             $distance = (float) ($row->vector_distance ?? 1.0);
             $results[] = [
+                'id' => (int) ($row->id ?? 0),
                 'chunk_index' => (int) ($row->chunk_index ?? 0),
                 'content' => $content,
                 'score' => 1.0 - $distance,
@@ -1008,22 +1130,26 @@ class WorkerExecutionService
     }
 
     /**
-     * 从候选块拼装知识上下文，按片段顺序输出。
+     * 从候选块拼装知识上下文，按片段顺序输出，并返回所使用的片段元数据。
      *
-     * @param  list<array{chunk_index:int,content:string,score:float}>  $scored
+     * @param  list<array{chunk_index:int,content:string,score:float,id?:int}>  $scored
+     * @return array{text:string, chunks:list<array{id:int|null, index:int, content:string}>}
      */
-    private function composeKnowledgeContext(array $scored, int $limit, int $maxChars): string
+    private function composeKnowledgeContext(array $scored, int $limit, int $maxChars): array
     {
         if ($scored === []) {
-            return '';
+            return ['text' => '', 'chunks' => []];
         }
 
         $selected = array_slice($scored, 0, max(1, $limit));
         usort($selected, static fn (array $a, array $b): int => $a['chunk_index'] <=> $b['chunk_index']);
 
         $parts = [];
+        $chunksMetadata = [];
         $charCount = 0;
-        foreach ($selected as $index => $chunk) {
+        $displayIndex = 1;
+
+        foreach ($selected as $chunk) {
             $content = trim((string) ($chunk['content'] ?? ''));
             if ($content === '') {
                 continue;
@@ -1032,10 +1158,21 @@ class WorkerExecutionService
             if ($parts !== [] && $nextLength > $maxChars) {
                 continue;
             }
-            $parts[] = '【知识片段'.($index + 1)."】\n".$content;
+
+            $parts[] = "【知识片段{$displayIndex}】\n".$content;
+            $chunksMetadata[] = [
+                'id' => isset($chunk['id']) ? (int) $chunk['id'] : null,
+                'index' => $displayIndex,
+                'content' => mb_substr($content, 0, 100), // 仅存储摘要用于引用对照
+            ];
+
             $charCount = $nextLength;
+            $displayIndex++;
         }
 
-        return trim(implode("\n\n", $parts));
+        return [
+            'text' => trim(implode("\n\n", $parts)),
+            'chunks' => $chunksMetadata,
+        ];
     }
 }

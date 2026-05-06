@@ -1,291 +1,103 @@
-# GEOFlow
+# 🚀 GEOFlow: Generative Engine Optimization Flow
 
-> Languages: [简体中文](../../README.md) | [English](README_en.md) | [日本語](README_ja.md) | [Español](README_es.md) | [Русский](README_ru.md) | **Português (BR)**
+**GEOFlow** é um sistema inteligente de engenharia de conteúdo de código aberto projetado especificamente para **GEO (Generative Engine Optimization)** e **SEO Moderno**.
 
-> GEOFlow é um sistema de engenharia de conteúdo inteligente de código aberto, projetado especificamente para GEO (Otimização de Motor de Geração). É uma das primeiras infraestruturas de dados, conteúdo e distribuição do mundo projetadas sistematicamente em torno de fluxos de trabalho GEO, conectando ativos de dados, bases de conhecimento, gerenciamento de materiais, geração de IA, revisão e publicação, apresentação frontend e distribuição futura de múltiplos canais em um pipeline em evolução.
-
-[![PHP](https://img.shields.io/badge/PHP-8.2%2B-blue)](https://www.php.net/)
-[![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-336791)](https://www.postgresql.org/)
-[![Docker](https://img.shields.io/badge/Docker-Compose-blue)](https://docs.docker.com/compose/)
-[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](../../LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/yaojingang/GEOFlow?style=social)](https://github.com/yaojingang/GEOFlow/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/yaojingang/GEOFlow?style=social)](https://github.com/yaojingang/GEOFlow/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/yaojingang/GEOFlow)](https://github.com/yaojingang/GEOFlow/issues)
-
-O GEOFlow é lançado sob a [Licença Apache 2.0](../../LICENSE). Você pode usar, copiar, modificar e distribuir, inclusive para fins comerciais, desde que mantenha os avisos de direitos autorais e licença e cumpra os termos de patente, marca registrada e exoneração de garantia da Apache-2.0.
+Na era dos mecanismos de busca de IA (como SearchGPT, Perplexity, Google SGE), o preenchimento de conteúdo tradicional perdeu sua eficácia. O GEOFlow transforma dados brutos em conteúdo otimizado para IA com "alta credibilidade" e "semântica estruturada" por meio de processamento sistemático de dados, tecnologia RAG (Geração Aumentada por Recuperação) e construção de redes semânticas.
 
 ---
 
-## ✨ O Que Você Pode Fazer Com Ele
+## 🔥 Por que escolher o GEOFlow?
 
-| Recurso | Descrição |
-|---------|-----------|
-| 🤖 Geração multi-modelo | APIs estilo OpenAI, tipos de modelo chat / embedding, adaptação de URL do provider, failover inteligente e tratamento de retry |
-| 📦 Execução de tarefas em lote | Criação de tarefas, limites de geração, frequência de publicação, execução de fila, registros de falha e filtragem de artigos por tarefa |
-| 🗂 Gestão unificada de materiais | Bibliotecas de títulos, bibliotecas de palavras-chave, bibliotecas de imagens, biblioteca de autores, bases de conhecimento e prompts |
-| 🧠 RAG de base de conhecimento | Faça upload de documentos, gere chunks, escreva vetores quando um modelo de embedding está configurado e recupere contexto relevante durante a geração |
-| 📋 Fluxo de revisão e publicação | Estados rascunho, revisão e publicação, auto-publicação opcional, mais filtros de artigos por status, autor e tarefa |
-| 🔍 Saída orientada para busca | Metadados SEO, Open Graph, dados estruturados e renderização GFM Markdown para títulos, tabelas, listas e imagens |
-| 🎨 Frontend e temas | Tema padrão, pacotes de tema, rotas de preview, troca de tema admin e marca fixa do admin GEOFlow |
-| 🌍 I18n do admin | O admin suporta chinês, inglês, japonês, espanhol, russo e português |
-| 🔔 Atualizações de versão | O admin pode verificar o `version.json` do GitHub e notificar quando uma versão mais recente está disponível |
-| 🐳 Pronto para deploy | **Docker Compose**: PostgreSQL (pgvector), Redis, app, fila, scheduler e Reverb |
-| 🗄 Runtime PostgreSQL | PostgreSQL por padrão; adequado para carga estável e writes concorrentes |
+O GEOFlow é mais do que apenas um CMS; é uma **Fábrica de Conteúdo de IA**. Comparado às ferramentas tradicionais, ele foi profundamente reforçado em "autoridade factual" e "leitura por máquina".
 
----
+### Principais Recursos:
 
-## 🖼 Preview da Interface
+#### 1. Mecanismo RAG de Primeira Classe: Busca Híbrida
+*   **Semântica + Precisa:** Combina a busca semântica `pgvector` com a busca de texto completo `tsvector` do PostgreSQL.
+*   **Algoritmo de Fusão RRF:** Emprega o algoritmo RRF (Reciprocal Rank Fusion) de nível industrial para garantir que o conhecimento de referência recuperado pela IA seja preciso e semanticamente coerente, eliminando completamente as alucinações da IA.
 
-<p>
-  <img src="../../docs/images/screenshots/dashboard-en.png" alt="GEOFlow dashboard preview" width="48%" />
-  <img src="../../docs/images/screenshots/tasks-en.png" alt="GEOFlow task management preview" width="48%" />
-</p>
-<p>
-  <img src="../../docs/images/screenshots/materials-en.png" alt="GEOFlow materials preview" width="48%" />
-  <img src="../../docs/images/screenshots/ai-config-en.png" alt="GEOFlow AI configuration preview" width="48%" />
-</p>
+#### 2. Autoridade Factual: Sistema de Citação e Sourcing
+*   **Notas de Rodapé Automáticas:** A IA marca automaticamente as notas de rodapé (ex: `[^1]`) com base no conhecimento de referência durante a geração do conteúdo.
+*   **Verificabilidade:** O frontend gera automaticamente uma lista de "Referências" com funcionalidade de salto bidirecional, melhorando significativamente a autoridade do conteúdo nas avaliações E-E-A-T do Google.
 
-Essas telas cobrem a home page, agendamento de tarefas, fluxo de trabalho de artigos e configuração de modelo. Mais documentação do admin está em `../../docs/` (adicione ou substitua screenshots localmente se os caminhos estiverem faltando).
+#### 3. Construção de Rede Semântica: Etiquetagem de Entidades JSON-LD Automatizada
+*   **Amigável ao Gráfico de Conhecimento:** Extrai automaticamente entidades de "Pessoa, Organização, Lugar, Tópico" dos artigos.
+*   **Gráfico Schema.org:** Injeta dinamicamente dados estruturados JSON-LD complexos para declarar proativamente a estrutura semântica do conteúdo aos mecanismos de busca.
+
+#### 4. Clusters de Tópicos: Rede de Links Internos Semânticos
+*   **Associação por Vetores:** Constrói automaticamente redes de links internos baseadas na similaridade de vetores.
+*   **Transferência de Autoridade:** Constrói poderosos Clusters de Tópicos por meio de links internos de alta relevância, fazendo com que os mecanismos de busca vejam seu site como um especialista em áreas específicas.
+
+#### 5. Desempenho Extremo: Otimização Inteligente de Mídia (Edge Performance)
+*   **Formatos Modernos:** As imagens são convertidas automaticamente para os formatos WebP/AVIF.
+*   **Renderização Responsiva:** Usa a tag `<picture>` para implementar o carregamento prioritário de WebP, otimizando muito os indicadores Core Web Vitals (LCP).
 
 ---
 
-## 🆕 Destaques da Nova Versão
+## 🛠️ Arquitetura Técnica
 
-Destaques da nova versão incluem:
+O GEOFlow é construído sobre a pilha de tecnologia mais recente, garantindo desempenho e escalabilidade:
 
-- **Experiência do admin**: marca fixa do admin GEOFlow, troca multi-idioma, edição/deleção de conta admin, carta de boas-vindas no primeiro login, lembretes de atualização de versão do GitHub e bloco de início rápido do dashboard.
-- **Pipeline de tarefas**: modos fixo e smart failover; geração e publicação são separados; links de artigos da tarefa abrem listas de artigos com escopo da tarefa.
-- **Sistema de materiais**: bases de conhecimento, bibliotecas de títulos, bibliotecas de palavras-chave, bibliotecas de imagens e autores são todas entradas de admin de primeira classe.
-- **Preparação para RAG**: bases de conhecimento são divididas em chunks após upload; modelos de embedding permitem writes vetoriais e recuperação; falta de setup de embedding tem orientação explícita.
-- **Setup de modelo**: regras de URL de provider mais claras para APIs estilo OpenAI, Zhipu, Volcengine Ark e outros providers não-`/v1`.
-- **Saída frontend**: Markdown de artigos usa renderização GFM, incluindo títulos, tabelas, listas e imagens; caminhos antigos `/uploads` são normalizados para `/storage/uploads`.
-- **Deploy e segurança**: caminho admin customizável via `ADMIN_BASE_PATH`; produção deve usar Nginx + PHP-FPM; altere a senha admin inicial antes de publicar.
-
----
-
-## 🏗 Fluxo de Execução
-
-```
-Admin
-  ↓
-Scheduler / Fila (opcional Horizon)
-  ↓
-Worker — chamada IA
-  ↓
-Rascunho / Revisão / Publicação
-  ↓
-Frontend
-```
+-   **Framework Principal:** [Laravel 12](https://laravel.com/) (PHP 8.2+)
+-   **Banco de Dados:** PostgreSQL + **pgvector** (Armazenamento de vetores)
+-   **Processamento Assíncrono:** Redis + **Laravel Horizon** (Agendamento e monitoramento de tarefas)
+-   **Integração de IA:** SDK `laravel/ai` (Suporta todos os LLMs compatíveis com OpenAI)
+-   **Comunicação em Tempo Real:** Laravel Reverb (Feedback de progresso em tempo real via WebSocket)
+-   **Desempenho Frontend:** TailwindCSS 4 + Vite
 
 ---
 
-## 🧱 Arquitetura
+## 📦 Início Rápido
 
-| Camada | Descrição |
-|--------|------------|
-| Web / Admin | **Laravel**: rotas, controllers, **Blade** para admin e artigos |
-| API | `routes/api.php` e outros (autenticação conforme configuração do projeto) |
-| Scheduler / Fila / Reverb | **Scheduler**, **`queue:work` / Horizon**, se necessário **Reverb** |
-| Domínio e Jobs | `app/Services`, `app/Jobs`, `app/Http/Controllers` etc. |
-| Armazenamento | **PostgreSQL** (recomendado **pgvector**) + **Redis** |
+### Requisitos do Ambiente
+- PHP 8.2+
+- PostgreSQL (com a extensão `pgvector` instalada)
+- Redis
+- Node.js & NPM
 
-Fluxo principal: configuração de modelos e prompts → preparação de base de conhecimento, títulos, palavras-chave, imagens e autores → tarefas na fila → workers geram conteúdo → rascunho / revisão / publicação → páginas frontend com SEO.
-
----
-
-## ⚡ Início Rápido no Admin
-
-1. **Configure a API**: adicione pelo menos um modelo de chat; para RAG, adicione um modelo de embedding.
-2. **Configure materiais**: prepare base de conhecimento, títulos, palavras-chave, imagens e autores com base em informações reais e verificáveis.
-3. **Crie uma tarefa**: escolha materiais, modelo, volume de geração e frequência de publicação; primeiro teste o fluxo via rascunhos ou revisão.
-
----
-
-## 🎯 Casos de Uso e Resultados Esperados
-
-O GEOFlow é adequado para estes cenários práticos:
-
-- **Site GEO independente**
-  Organize conteúdo de produto, FAQs, casos e conhecimento de marca em um sistema sustentável. O objetivo é melhorar visibilidade em buscas com IA e eficiência operacional, não criar páginas fracas em massa.
-- **Subcanal GEO em um site oficial**
-  Adicione um canal de notícias, conhecimento ou soluções dentro de um site existente. Estruture o conteúdo para busca, citações e atualização em equipe.
-- **Site-fonte GEO independente**
-  Publique explicações, rankings, guias e referências de qualidade sobre um setor ou tema. Construa ativos confiáveis, não ruído na web.
-- **Gestão interna de conteúdo GEO**
-  Use como backend de produção para modelos, materiais, conhecimento, revisão e publicação. Reduza a dispersão de ferramentas e aumente a eficiência da equipe.
-- **GEO multi-site / multi-seção**
-  Opere múltiplos canais, marcas ou modelos com um padrão operacional comum.
-- **Gestão automatizada de fontes e distribuição**
-  Estruture bases de conhecimento, atualizações temáticas e distribuição para manter informação valiosa recuperável.
-
-O valor deve partir de uma **base de conhecimento real, confiável e mantida continuamente**.
-O GEOFlow não deve ser usado para fabricar ruído, poluir a internet ou publicar afirmações falsas. Ele existe para ajudar equipes a produzir e distribuir conteúdo **confiável** e melhorar a eficiência operacional de GEO.
-
----
-
-## 🧭 Padrões Sugeridos de Deploy e Uso
-
-- **Como site GEO independente**
-  Publique frontend e admin completos; opere produtos, FAQ, casos e temas como uma propriedade própria.
-- **Como subcanal GEO**
-  Use subdiretório, subdomínio ou canal lateral sem reconstruir o site principal.
-- **Como site-fonte GEO**
-  Priorize a base de conhecimento e use tarefas para atualizações controladas e contínuas.
-- **Como backend GEO interno**
-  Dê menos foco ao site público e concentre-se em admin, modelos, materiais, agendamento, revisão e APIs.
-- **Como sistema multi-site ou multicanal**
-  Reutilize workflows entre marcas, temas e experimentos.
-- **Como camada de gestão automatizada de fontes**
-  Trate bibliotecas de títulos, imagens, prompts e conhecimento como infraestrutura de longo prazo.
-
-Ordem recomendada:
-
-1. Defina objetivos reais e público-alvo
-2. Construa a base de conhecimento antes de automatizar em escala
-3. Mantenha o conteúdo correto, verificável e sustentável
-4. Só depois escale com modelos, tarefas e templates
-
-Uma base de conhecimento fraca com automação forte apenas escala ruído. No GEOFlow, **a qualidade da base de conhecimento vem primeiro**.
-
----
-
-## 🚀 Deploy com Docker Compose
-
-### Configuração Rápida
-
-1. Clone o projeto:
+### Passos de Instalação
 ```bash
-git clone https://github.com/yaojingang/GEOFlow.git
-cd GEOFlow
+# 1. Clonar o repositório
+git clone https://github.com/yaojingang/GEOFlow.git && cd GEOFlow
+
+# 2. Executar o script de configuração automatizada
+composer run setup
+
+# 3. Configurar variáveis de ambiente
+# Edite o arquivo .env, configure DB_CONNECTION=pgsql e seu AI_API_KEY
 ```
 
-2. Copie o arquivo de ambiente:
+### Desenvolvimento e Execução
 ```bash
-cp .env.example .env
-```
-
-3. Inicie os containers:
-```bash
-docker compose up -d
-```
-
-Acesse `http://localhost:18080` (frontend) e `http://localhost:18080/geo_admin` (admin).
-
-Para produção, configure `.env.prod` e use `docker compose -f docker-compose.prod.yml up -d`.
-
-### portas
-
-| Serviço | Porta |
-|---------|-------|
-| App (development) | 18080 |
-| App (production nginx) | 18080 |
-| Postgres | 15432 |
-| Redis | 16379 |
-| Reverb | 18081 |
-
----
-
-## 🧩 Notas de Deploy por Código-Fonte
-
-```bash
-chmod -R ug+rwx storage bootstrap/cache
-```
-
-**Admin padrão** após `php artisan db:seed`:
-
-| Campo | Valor |
-|-------|-------|
-| Usuário | `admin` |
-| Senha | `password` (**altere imediatamente em produção**) |
-
-### Bloqueio de login admin e desbloqueio manual
-
-- Contas admin são bloqueadas após **5** tentativas consecutivas de login inválido.
-- Contas bloqueadas precisam ser desbloqueadas por um administrador.
-- Comando de desbloqueio:
-
-```bash
-php artisan geoflow:admin-unlock <username>
-```
-
-**HTTP em produção:** use Nginx/Apache + **PHP-FPM**, com document root em **`public/`**. Não exponha a raiz do projeto como web root.
-
----
-
-## 🐳 Notas de Deploy Docker
-
-### Serviços do Compose de desenvolvimento
-
-| Serviço | Papel |
-|---------|-------|
-| `postgres` | PostgreSQL 16 + pgvector |
-| `redis` | Redis 7 |
-| `init` | Bootstrap único (`restart: "no"`) |
-| `app` | `php artisan serve`, mapeia **`${APP_PORT:-18080}:8080`** |
-| `queue` | `queue:work redis` |
-| `scheduler` | `schedule:work` |
-| `reverb` | WebSocket, mapeia **`${REVERB_EXPOSE_PORT:-18081}:8080`** |
-
-Para produção, use a pilha **`docker-compose.prod.yml`** com Nginx + php-fpm e consulte `../deployment/DEPLOYMENT.md`.
-
-**Atualização:** `git pull` → `docker compose build` → `docker compose up -d`.
-
----
-
-## Desenvolvimento e Testes
-
-```bash
-composer test
-./vendor/bin/pint
+# Inicie o servidor, o ouvinte de fila e o Vite simultaneamente
+npm run dev
 ```
 
 ---
 
-## 📖 Documentação
+## 📈 Visão Geral do Fluxo de Trabalho
 
-- [Documentação completa](../README.md)
-- [Changelog](../CHANGELOG.md)
+1.  **Importar Materiais:** Carregue PDFs, documentos ou URLs; o sistema os divide e vetoriza automaticamente na base de conhecimento.
+2.  **Orquestrar Tarefas:** Defina modelos de Prompt, roteamento de modelos e intervalos de publicação.
+3.  **Geração Inteligente:** Agentes de IA recuperam contextos híbridos e geram conteúdo Markdown com marcadores de citação.
+4.  **Melhoria Semântica:** Extraia automaticamente entidades, gere vetores de artigos e calcule links internos semânticos.
+5.  **Distribuição Automática:** O conteúdo é publicado automaticamente por meio de modelos de tema otimizados para SEO e os Sitemaps dinâmicos são atualizados.
 
 ---
 
-## ❤️ Agradecimentos
-
-- [Laravel](https://laravel.com/) - O framework PHP
-- [Laravel AI SDK](https://laravel.com/ai) - Integração com AI
-- [Laravel Horizon](https://laravel.com/horizon) - Gerenciamento de fila
-- [Laravel Reverb](https://laravel.com/reverb) - WebSocket
-- [pgvector](https://github.com/pgvector/pgvector) - Vetores no PostgreSQL
+## 🗺️ Roadmap
+- [x] Busca Híbrida com Fusão RRF
+- [x] Sistema de Citação e Sourcing
+- [x] Etiquetagem de Entidades JSON-LD Automatizada
+- [x] Mecanismo de Recomendação de Links Internos Semânticos
+- [x] Otimização Inteligente de Mídia WebP/AVIF
+- [ ] Push de API multiplataforma (WordPress, Webflow)
+- [ ] Geração de Conteúdo Multimodal (Geração automática de Vídeo/Áudio correspondente)
 
 ---
 
 ## 📄 Licença
-
-GEOFlow é software livre sob a [Licença Apache 2.0](../../LICENSE).
-
----
-
-## 🌍 README em Outros Idiomas
-
-- [简体中文](../../README.md)
-- [English](README_en.md)
-- [日本語](README_ja.md)
-- [Español](README_es.md)
-- [Русский](README_ru.md)
+O GEOFlow está sob a licença [Apache-2.0](LICENSE).
 
 ---
-
-<p align="center">
-  <a href="https://github.com/yaojingang/GEOFlow">
-    <img src="https://img.shields.io/github/stars/yaojingang/GEOFlow?style=flat" alt="GitHub Stars" />
-  </a>
-  <a href="https://github.com/yaojingang/GEOFlow">
-    <img src="https://img.shields.io/github/forks/yaojingang/GEOFlow?style=flat" alt="GitHub Forks" />
-  </a>
-  <a href="https://github.com/yaojingang/GEOFlow/issues">
-    <img src="https://img.shields.io/github/issues/yaojingang/GEOFlow?style=flat" alt="GitHub Issues" />
-  </a>
-</p>
-
-## ⭐ Histórico de Stars
-
-[![Star History Chart](https://api.star-history.com/svg?repos=yaojingang/GEOFlow&type=Date)](https://star-history.com/#yaojingang/GEOFlow&Date)
+**GEOFlow** - *Redefinindo a engenharia de conteúdo para a era da busca por IA.*

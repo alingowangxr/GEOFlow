@@ -42,22 +42,20 @@ class ArticleController extends Controller
             $excerpt = ArticleHtmlPresenter::stripLeadingTitleHeading($excerpt, (string) $article->title);
         }
 
-        $contentHtml = ArticleHtmlPresenter::markdownToHtml($body);
+        $contentHtml = ArticleHtmlPresenter::markdownToHtml($body, $article->references ?? []);
 
         $tags = $this->keywordTags((string) $article->keywords);
 
-        $related = Article::query()
-            ->published()
-            ->where('category_id', $article->category_id)
-            ->whereKeyNot($article->id)
-            ->inRandomOrder()
-            ->limit(6)
-            ->get(['id', 'title', 'slug']);
+        // Task 2.2: 使用语义向量寻找相关文章
+        $related = \App\Services\GeoFlow\SemanticLinkService::getRelatedArticles($article, 6);
 
         $pageTitle = $article->title.' - '.$siteTitle;
         $pageDescription = $excerpt !== '' ? $excerpt : ArticleHtmlPresenter::cardSummary($article, 160);
 
         $stickyAd = ArticleStickyAdPicker::firstEnabled();
+
+        $siteUrl = (string) ($map['site_url'] ?? config('geoflow.site_url', config('app.url')));
+        $jsonLd = \App\Support\Site\JsonLdGenerator::generateForArticle($article, $siteUrl);
 
         return SiteThemeViewResolver::first('article', [
             'activeNav' => 'article',
@@ -73,6 +71,7 @@ class ArticleController extends Controller
             'pageDescription' => $pageDescription,
             'stickyAd' => $stickyAd,
             'canonicalUrl' => route('site.article', $article->slug),
+            'jsonLd' => $jsonLd,
         ]);
     }
 

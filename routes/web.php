@@ -35,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['site.locale'])->group(function (): void {
     Route::get('/', [HomeController::class, 'index'])->name('site.home');
+    Route::get('/sitemap.xml', [\App\Http\Controllers\Site\SitemapController::class, 'index'])->name('site.sitemap');
     Route::get('/archive', [ArchiveController::class, 'index'])->name('site.archive');
     Route::get('/archive/{year}/{month}', [ArchiveController::class, 'month'])
         ->name('site.archive.month')

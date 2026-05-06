@@ -6,6 +6,7 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:site_name" content="{{ $siteTitle }}">
+    {!! $jsonLd !!}
 @endpush
 
 @section('content')
@@ -77,9 +78,12 @@
                 <div class="article-rail max-w-none">
                     <div class="related-articles-header flex items-center mb-5">
                         <span class="related-articles-header__icon mr-2" aria-hidden="true">
-                            <i data-lucide="bookmark" class="w-4 h-4 text-gray-500 flex-shrink-0"></i>
+                            <i data-lucide="sparkles" class="w-4 h-4 text-blue-500 flex-shrink-0"></i>
                         </span>
-                        <h3 class="text-base font-medium text-gray-700 leading-none">{{ __('site.article_related') }}</h3>
+                        <h3 class="text-base font-medium text-gray-700 leading-none">
+                            {{ __('site.article_related') }} 
+                            <span class="text-xs font-normal text-gray-400 ml-2">(基於語義相似度推薦)</span>
+                        </h3>
                     </div>
                     <ul class="related-articles-list space-y-4">
                         @foreach($relatedArticles as $index => $related)
