@@ -1,10 +1,15 @@
 # 🚀 GEOFlow: Generative Engine Optimization Flow
 
-[English](./docs/readme/README_en.md) | [繁體中文](./README.md) | [Español](./docs/readme/README_es.md) | [日本語](./docs/readme/README_ja.md) | [Português](./docs/readme/README_pt_BR.md) | [Русский](./docs/readme/README_ru.md)
+[English](./docs/readme/README_en.md) | [简体中文](./docs/readme/README_zh_CN.md) | [繁體中文](./README.md) | [Español](./docs/readme/README_es.md) | [日本語](./docs/readme/README_ja.md) | [Português](./docs/readme/README_pt_BR.md) | [Русский](./docs/readme/README_ru.md)
 
 **GEOFlow** 是一個專為 **GEO (生成式引擎優化)** 與 **現代 SEO** 打造的開源智能內容工程系統。
 
 在 AI 搜尋引擎（如 SearchGPT, Perplexity, Google SGE）崛起的時代，傳統的內容堆砌已失去效力。GEOFlow 通過系統化的數據處理、RAG (檢索增強生成) 技術以及語義網路構建，將原始數據轉化為具備「高採信度」與「結構化語義」的 AI 優化內容。
+
+---
+
+## 🍴 Fork 說明
+本項目 Fork 自 [yaojingang/GEOFlow](https://github.com/yaojingang/GEOFlow)，並在其基礎上進行了深度優化與功能增強。
 
 ---
 
@@ -60,7 +65,7 @@ GEOFlow 基於最新的技術棧構建，確保效能與可擴展性：
 ### 安裝步驟
 ```bash
 # 1. 克隆倉庫
-git clone https://github.com/yaojingang/GEOFlow.git && cd GEOFlow
+git clone https://github.com/alingowangxr/GEOFlow.git && cd GEOFlow
 
 # 2. 執行自動化設置腳本
 composer run setup
@@ -99,7 +104,7 @@ npm run dev
 ---
 
 ## 📄 許可證
-GEOFlow 採用 [Apache-2.0](LICENSE) 許可證。
+本項目採用 [Apache-2.0](LICENSE) 許可證。
 
 ---
 **GEOFlow** - *為 AI 搜尋時代重新定義內容工程。*

@@ -1,10 +1,15 @@
 # 🚀 GEOFlow: Generative Engine Optimization Flow
 
-[English](./README_en.md) | [繁體中文](../../README.md) | [Español](./README_es.md) | [日本語](./README_ja.md) | [Português](./README_pt_BR.md) | [Русский](./README_ru.md)
+[English](./README_en.md) | [简体中文](./README_zh_CN.md) | [繁體中文](../../README.md) | [Español](./README_es.md) | [日本語](./README_ja.md) | [Português](./README_pt_BR.md) | [Русский](./README_ru.md)
 
 **GEOFlow** é um sistema inteligente de engenharia de conteúdo de código aberto projetado especificamente para **GEO (Generative Engine Optimization)** e **SEO Moderno**.
 
 Na era dos mecanismos de busca de IA (como SearchGPT, Perplexity, Google SGE), o preenchimento de conteúdo tradicional perdeu sua eficácia. O GEOFlow transforma dados brutos em conteúdo otimizado para IA com "alta credibilidade" e "semântica estruturada" por meio de processamento sistemático de dados, tecnologia RAG (Geração Aumentada por Recuperação) e construção de redes semânticas.
+
+---
+
+## 🍴 Informações de Fork
+Este projeto é um fork de [yaojingang/GEOFlow](https://github.com/yaojingang/GEOFlow), com otimizações profundas e melhorias funcionais.
 
 ---
 
@@ -60,7 +65,7 @@ O GEOFlow é construído sobre a pilha de tecnologia mais recente, garantindo de
 ### Passos de Instalação
 ```bash
 # 1. Clonar o repositório
-git clone https://github.com/yaojingang/GEOFlow.git && cd GEOFlow
+git clone https://github.com/alingowangxr/GEOFlow.git && cd GEOFlow
 
 # 2. Executar o script de configuração automatizada
 composer run setup
@@ -99,7 +104,7 @@ npm run dev
 ---
 
 ## 📄 Licença
-O GEOFlow está sob a licença [Apache-2.0](LICENSE).
+Este projeto está sob a licença [Apache-2.0](LICENSE).
 
 ---
 **GEOFlow** - *Redefinindo a engenharia de conteúdo para a era da busca por IA.*

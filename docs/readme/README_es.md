@@ -1,10 +1,15 @@
 # 🚀 GEOFlow: Generative Engine Optimization Flow
 
-[English](./README_en.md) | [繁體中文](../../README.md) | [Español](./README_es.md) | [日本語](./README_ja.md) | [Português](./README_pt_BR.md) | [Русский](./README_ru.md)
+[English](./README_en.md) | [简体中文](./README_zh_CN.md) | [繁體中文](../../README.md) | [Español](./README_es.md) | [日本語](./README_ja.md) | [Português](./README_pt_BR.md) | [Русский](./README_ru.md)
 
 **GEOFlow** es un sistema inteligente de ingeniería de contenidos de código abierto diseñado específicamente para **GEO (Generative Engine Optimization)** y **SEO Moderno**.
 
 En la era de los motores de búsqueda de IA (como SearchGPT, Perplexity, Google SGE), el relleno de contenido tradicional ha perdido su eficacia. GEOFlow transforma los datos brutos en contenido optimizado para IA con "alta credibilidad" y "semántica estructurada" a través del procesamiento sistemático de datos, la tecnología RAG (Generación Aumentada por Recuperación) y la construcción de redes semánticas.
+
+---
+
+## 🍴 Información de Fork
+Este proyecto es un fork de [yaojingang/GEOFlow](https://github.com/yaojingang/GEOFlow), con optimizaciones profundas y mejoras funcionales.
 
 ---
 
@@ -20,7 +25,7 @@ GEOFlow es más que un simple CMS; es una **Fábrica de Contenidos de IA**. En c
 
 #### 2. Autoridad Fáctica: Sistema de Citación y Sourcing
 *   **Notas al Pie Automáticas:** La IA marca automáticamente las notas al pie (por ejemplo, `[^1]`) basándose en el conocimiento de referencia durante la generación de contenido.
-*   **Verificabilidad:** El frontend genera automáticamente una lista de "Referencias" con funcionalidad de salto bidireccional, mejorando significativamente la autoridad del contenido en las calificaciones E-E-A-T de Google.
+*   **Verificabilidad:** El frontend genera automáticamente una lista de "Referencias" con funcionalidad de salto bidirecional, mejorando significativamente la autoridad del contenido en las calificaciones E-E-A-T de Google.
 
 #### 3. Construcción de Red Semántica: Etiquetado de Entidades JSON-LD Automatizado
 *   **Amigable con el Grafo de Conocimiento:** Extrae automáticamente entidades de "Persona, Organización, Lugar, Tema" de los artículos.
@@ -60,7 +65,7 @@ GEOFlow está construido sobre la última pila tecnológica, garantizando rendim
 ### Pasos de Instalación
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/yaojingang/GEOFlow.git && cd GEOFlow
+git clone https://github.com/alingowangxr/GEOFlow.git && cd GEOFlow
 
 # 2. Ejecutar el script de configuración automatizada
 composer run setup
@@ -99,7 +104,7 @@ npm run dev
 ---
 
 ## 📄 Licencia
-GEOFlow está bajo la licencia [Apache-2.0](LICENSE).
+Este proyecto está bajo la licencia [Apache-2.0](LICENSE).
 
 ---
 **GEOFlow** - *Redefiniendo la ingeniería de contenidos para la era de la búsqueda por IA.*
