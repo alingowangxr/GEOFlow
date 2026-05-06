@@ -4,7 +4,7 @@
 
 **GEOFlow** 是一個專為 **GEO (生成式引擎優化)** 與 **現代 SEO** 打造的開源智能內容工程系統。
 
-在 AI 搜尋引擎（如 SearchGPT, Perplexity, Google SGE）崛起的時代，內容的「權威性」與「機器可讀性」已成為獲取流量的關鍵。GEOFlow 通過系統化的數據處理、頂尖的 RAG 技術與語義網路構建，將原始素材轉化為具備事實支撐、語義豐富且極速加載的優質內容。
+在 AI 搜尋引擎（如 SearchGPT, Perplexity, Google SGE）崛起的時代，內容的「事實權威性」與「機器可讀性」已成為獲取流量的關鍵。GEOFlow 通過系統化的數據處理、頂尖的 RAG 技術與語義網路構建，將原始素材轉化為具備事實支撐、語義豐富且極速加載的優質內容。
 
 ---
 
@@ -24,18 +24,18 @@
 ### 2. 語義網路與 GEO 優化
 *   **JSON-LD 實體引擎:** 自動提取文章中的人物、組織、地點等實體，並注入 Schema.org Graph 結構化數據，主動與搜尋引擎知識圖譜對接。
 *   **語義內鏈網路 (Semantic Linking):** 基於向量相似度自動構建「主題集群 (Topic Clusters)」，實現文章間的高相關性語義鏈接。
-*   **智能摘要與 Meta:** 自動生成符合 SEO 標準的 Meta 描述、核心關鍵詞與內容摘要。
+*   **智能摘要與 Meta:** 自動生成符合 SEO 標準的 Meta 描述、核心關鍵詞、Open Graph 標籤與內容摘要。
 
-### 3. 素材與任務編排體系
-*   **集中化管理:** 內建標題庫、關鍵詞庫、圖片庫及作者管理系統。
-*   **AI 批量任務:** 支持循環任務 (Loop)、發佈間隔設置及多模型自動路由。
-*   **多模型支持:** 兼容 OpenAI 協議的所有主流大模型，支持故障轉移 (Failover) 策略。
-*   **全生命週期管理:** 涵蓋草稿生成、人工/自動審核、定時發佈的全流程。
+### 3. 素材與 AI 任務編排
+*   **集中化素材管理:** 內建標題庫、關鍵詞庫、圖片庫、知識庫（支持切片與向量化預覽）及作者管理系統。
+*   **三段式工作流:** 提供「草稿 → 審核 → 發佈」的完整鏈路，支持人工干預或自動化策略。
+*   **AI 批量調度:** 支持循環任務 (Loop)、自定義發佈間隔及多模型故障轉移 (Failover) 路由。
+*   **多模型兼容:** 兼容 OpenAI 協議的所有主流大模型（如 GPT-4, Claude, DeepSeek, Gemini 等）。
 
 ### 4. 技術 SEO 與極致效能
-*   **智能媒體優化:** 圖片自動轉換為 WebP 格式，並採用 `<picture>` 標籤實現響應式渲染，極大化提升 LCP 指標。
+*   **智能媒體優化:** 圖片自動轉換為 WebP 格式，並採用 `<picture>` 標籤實現響應式渲染，極大化提升 Core Web Vitals (LCP) 指標。
 *   **動態 Sitemap:** 根據內容權重自動生成的 XML 站點地圖，主動引導爬蟲抓取核心內容。
-*   **實時監控:** 集成 Laravel Horizon，提供可視化的任務隊列監控與心跳追蹤。
+*   **實時監控與 API:** 集成 Laravel Horizon 隊列監控，提供 RESTful API 與 CLI 工具，方便集成到現有的自動化流水線中。
 
 ---
 
@@ -46,50 +46,48 @@
 -   **異步處理:** Redis + **Laravel Horizon** (高性能任務隊列)
 -   **AI SDK:** `laravel/ai` 官方套件
 -   **實時通訊:** Laravel Reverb (WebSocket)
--   **前端開發:** TailwindCSS 4 + Vite
+-   **部署:** 全面支持 Docker Compose 一鍵部署
 
 ---
 
-## 📦 快速開始
+## 📦 快速開始 (Docker)
 
 ### 環境要求
-- PHP 8.2+
-- PostgreSQL (需安裝 `pgvector` 擴展)
-- Redis 6.2+
-- Node.js & NPM
+- Docker & Docker Compose
+- AI 模型 API Key (OpenAI 兼容)
 
 ### 安裝步驟
 ```bash
 # 1. 克隆倉庫
 git clone https://github.com/alingowangxr/GEOFlow.git && cd GEOFlow
 
-# 2. 執行自動化設置腳本
-composer run setup
-
-# 3. 配置環境變量
+# 2. 準備環境變量
+cp .env.example .env
 # 編輯 .env，配置 DB_CONNECTION=pgsql 及你的 AI_API_KEY
+
+# 3. 啟動服務
+docker compose --profile scheduler up -d --build
 ```
 
-### 啟動開發環境
-```bash
-npm run dev
-```
+### 訪問地址
+- **前台地址:** `http://localhost:18080`
+- **後台地址:** `http://localhost:18080/geo_admin/` (默認賬號: `admin` / `admin888`)
 
 ---
 
 ## 🗺️ 路線圖 (Roadmap)
-- [x] 混合檢索與 RRF 算法
-- [x] 引用溯源與雙向腳註
-- [x] 自動化 JSON-LD 實體標註
-- [x] 語義內鏈推薦引擎
-- [x] WebP/AVIF 智能媒體優化
+- [x] 混合檢索與 RRF 算法 (Hybrid RAG)
+- [x] 引用溯源與雙向腳註 (Citations)
+- [x] 自動化 JSON-LD 實體標註 (Structured Data)
+- [x] 語義內鏈推薦引擎 (Topic Clusters)
+- [x] WebP/AVIF 智能媒體優化 (LCP Enhancement)
 - [ ] 跨平台 API 發佈器 (WordPress/Webflow)
 - [ ] 多模態內容生成 (圖文轉影片)
 
 ---
 
 ## 📄 許可證
-本項目採用 [Apache-2.0](LICENSE) 許可證。
+本項目採用 [Apache-2.0](LICENSE) 許可證，歡迎商業使用。
 
 ---
 **GEOFlow** - *為 AI 搜尋時代重新定義內容工程。*

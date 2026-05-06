@@ -4,7 +4,7 @@
 
 **GEOFlow** é um sistema inteligente de engenharia de conteúdo de código aberto projetado especificamente para **GEO (Generative Engine Optimization)** e **SEO Moderno**.
 
-Na era dos mecanismos de busca de IA (como SearchGPT, Perplexity, Google SGE), a "autoridade" e a "leitura por máquina" do conteúdo tornaram-se críticas para a aquisição de tráfego. O GEOFlow transforma materiais brutos em conteúdo de alta qualidade, fundamentado em fatos, semanticamente rico e com carregamento ultrarrápido, por meio de processamento sistemático de dados, tecnologia RAG de ponta e construção de redes semânticas.
+Na era dos mecanismos de busca de IA (como SearchGPT, Perplexity, Google SGE), a "autoridade factual" e a "leitura por máquina" do conteúdo tornaram-se críticas para a aquisição de tráfego. O GEOFlow transforma materiais brutos em conteúdo de alta qualidade, fundamentado em fatos, semanticamente rico e com carregamento ultrarrápido, por meio de processamento sistemático de dados, tecnologia RAG de ponta e construção de redes semânticas.
 
 ---
 
@@ -24,18 +24,18 @@ Este projeto é um fork de [yaojingang/GEOFlow](https://github.com/yaojingang/GE
 ### 2. Web Semântica e Otimização GEO
 *   **Mecanismo de Entidades JSON-LD:** Extrai automaticamente entidades (Pessoa, Organização, Local, etc.) e injeta dados estruturados Schema.org Graph para interagir proativamente com os gráficos de conhecimento dos mecanismos de busca.
 *   **Links Internos Semânticos:** Constrói automaticamente "Clusters de Tópicos" baseados na similaridade de vetores, alcançando links semânticos de alta relevância entre artigos.
-*   **Snippets Inteligentes e Meta:** Gera automaticamente descrições Meta, palavras-chave e resumos de conteúdo compatíveis com SEO.
+*   **Snippets Inteligentes e Meta:** Gera automaticamente descrições Meta, palavras-chave, tags Open Graph e resumos de conteúdo compatíveis com SEO.
 
-### 3. Orquestração de Materiais e Tarefas
-*   **Gestão Centralizada:** Bibliotecas integradas para títulos, palavras-chave, imagens e sistemas de gestão de autores.
-*   **Tarefas em Lote de IA:** Suporta tarefas em loop, configurações de intervalo de publicação e roteamento automático multimodelo.
-*   **Suporte Multimodelo:** Compatível com todos os principais LLMs via protocolo OpenAI, suportando estratégias de failover.
-*   **Gestão do Ciclo de Vida:** Abrange todo o processo, desde a geração de rascunhos e revisão manual/auto até a publicação agendada.
+### 3. Orquestração de Materiais e Tarefas de IA
+*   **Gestão Centralizada de Materiais:** Bibliotecas integradas para títulos, palavras-chave, imagens, bases de conhecimento (com fragmentação/visualização de vetores) e sistemas de gestão de autores.
+*   **Fluxo de Trabalho de Três Etapas:** Fornece um pipeline completo de "Rascunho → Revisão → Publicação" com suporte para intervenção manual ou estratégias automatizadas.
+*   **Agendamento em Lote de IA:** Suporta tarefas em loop, intervalos de publicação personalizados e roteamento de failover multimodelo.
+*   **Compatibilidade Multimodelo:** Compatível com todos os principais LLMs via protocolo OpenAI (ex: GPT-4, Claude, DeepSeek, Gemini, etc.).
 
 ### 4. SEO Técnico e Desempenho Extremo
-*   **Otimização Inteligente de Mídia:** Imagens são convertidas automaticamente para o formato WebP e renderizadas usando a tag `<picture>` para carregamento responsivo, melhorando muito os indicadores LCP.
+*   **Otimização Inteligente de Mídia:** Imagens são convertidas automaticamente para o formato WebP e renderizadas usando a tag `<picture>` para carregamento responsivo, melhorando muito os Core Web Vitals (LCP).
 *   **Sitemap Dinâmico:** Gera automaticamente sitemaps XML baseados no peso do conteúdo para guiar os rastreadores ao conteúdo principal.
-*   **Monitoramento em Tempo Real:** Integrado ao Laravel Horizon para monitoramento visualizado de filas de tarefas e rastreamento de batimentos cardíacos.
+*   **Monitoramento em Tempo Real e API:** Integrado ao Laravel Horizon para monitoramento visualizado de filas, fornecendo APIs RESTful e ferramentas CLI para uma integração de automação perfeita.
 
 ---
 
@@ -46,50 +46,48 @@ Este projeto é um fork de [yaojingang/GEOFlow](https://github.com/yaojingang/GE
 -   **Processamento Assíncrono:** Redis + **Laravel Horizon** (Filas de tarefas de alto desempenho)
 -   **AI SDK:** Pacote oficial `laravel/ai`
 -   **Tempo Real:** Laravel Reverb (WebSocket)
--   **Frontend:** TailwindCSS 4 + Vite
+-   **Despliegue:** Suporte completo de Docker Compose para configuração em um clique.
 
 ---
 
-## 📦 Início Rápido
+## 📦 Início Rápido (Docker)
 
 ### Requisitos do Ambiente
-- PHP 8.2+
-- PostgreSQL (com extensão `pgvector`)
-- Redis 6.2+
-- Node.js & NPM
+- Docker & Docker Compose
+- API Key de modelo de IA (compatível com OpenAI)
 
 ### Passos de Instalação
 ```bash
 # 1. Clonar o repositório
 git clone https://github.com/alingowangxr/GEOFlow.git && cd GEOFlow
 
-# 2. Executar o script de configuração automatizada
-composer run setup
-
-# 3. Configurar variáveis de ambiente
+# 2. Preparar variáveis de ambiente
+cp .env.example .env
 # Edite .env, configure DB_CONNECTION=pgsql e sua AI_API_KEY
+
+# 3. Iniciar serviços
+docker compose --profile scheduler up -d --build
 ```
 
-### Iniciar Desenvolvimento
-```bash
-npm run dev
-```
+### URLs de Acesso
+- **Frontend:** `http://localhost:18080`
+- **Backend:** `http://localhost:18080/geo_admin/` (Padrão: `admin` / `admin888`)
 
 ---
 
 ## 🗺️ Roadmap
-- [x] Busca Híbrida e Algoritmo RRF
-- [x] Citações e Notas de Rodapé Bidirecionais
-- [x] Etiquetagem de Entidades JSON-LD Automatizada
-- [x] Mecanismo de Recomendação de Links Semânticos
-- [x] Otimização Inteligente de Mídia WebP/AVIF
+- [x] Busca Híbrida e Algoritmo RRF (Hybrid RAG)
+- [x] Citações e Notas de Rodapé Bidirecionais (Citations)
+- [x] Etiquetagem de Entidades JSON-LD Automatizada (Structured Data)
+- [x] Mecanismo de Recomendação de Links Semânticos (Topic Clusters)
+- [x] Otimização Inteligente de Mídia WebP/AVIF (LCP Enhancement)
 - [ ] Publicador de API Multiplataforma (WordPress/Webflow)
 - [ ] Geração de Conteúdo Multimodal (Texto para Vídeo)
 
 ---
 
 ## 📄 Licença
-Este projeto está sob a licença [Apache-2.0](LICENSE).
+Este projeto está sob a licença [Apache-2.0](LICENSE). O uso comercial é bem-vindo.
 
 ---
 **GEOFlow** - *Redefinindo a engenharia de conteúdo para a era da busca por IA.*
