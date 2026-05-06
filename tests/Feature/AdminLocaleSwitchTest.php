@@ -15,6 +15,7 @@ class AdminLocaleSwitchTest extends TestCase
     {
         $this->assertSame([
             'zh_CN',
+            'zh_TW',
             'en',
             'ja',
             'es',
@@ -25,7 +26,7 @@ class AdminLocaleSwitchTest extends TestCase
 
     public function test_admin_locale_switch_accepts_new_languages(): void
     {
-        foreach (['ja', 'es', 'ru', 'pt_BR'] as $locale) {
+        foreach (['zh_TW', 'ja', 'es', 'ru', 'pt_BR'] as $locale) {
             $this->from(route('admin.login'))
                 ->get(route('admin.locale.switch', ['locale' => $locale]))
                 ->assertRedirect(route('admin.login'))
@@ -45,6 +46,7 @@ class AdminLocaleSwitchTest extends TestCase
         ]);
 
         $expectations = [
+            'zh_TW' => '首頁',
             'ja' => 'ダッシュボード',
             'es' => 'Panel',
             'ru' => 'Панель',

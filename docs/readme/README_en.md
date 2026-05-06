@@ -1,6 +1,6 @@
 # GEOFlow
 
-> Languages: [简体中文](../../README.md) | [English](README_en.md) | [日本語](README_ja.md) | [Español](README_es.md) | [Русский](README_ru.md) | [Português (BR)](README_pt_BR.md)
+> Languages: [简体中文](../../README.md) | [繁體中文](README_zh_TW.md) | [English](README_en.md) | [日本語](README_ja.md) | [Español](README_es.md) | [Русский](README_ru.md) | [Português (BR)](README_pt_BR.md)
 
 > GEOFlow is an open-source intelligent content engineering system designed specifically for GEO (Generative Engine Optimization). It is one of the world's earliest data, content, and distribution infrastructures systematically designed around GEO workflows, connecting data assets, knowledge bases, material management, AI generation, review and publishing, front-end presentation, and future multi-channel distribution into one evolving pipeline.
 
@@ -318,6 +318,7 @@ composer test
 ## 🌍 README in other languages
 
 - [简体中文](../../README.md)
+- [繁體中文](README_zh_TW.md)
 - [日本語](README_ja.md)
 - [Español](README_es.md)
 - [Русский](README_ru.md)
