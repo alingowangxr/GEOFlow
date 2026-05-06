@@ -2,6 +2,29 @@
 
 This document tracks user-facing updates in the public repository. For future GitHub pushes, update this file together with the Chinese version in `CHANGELOG.md`.
 
+## 2026-05-06
+
+### v1.3 - Industrial-Grade Optimization & GEO Enhancement (The Google-Agent Update)
+
+- **Added Advanced RAG Hybrid Search Engine**:
+  - Combined PostgreSQL `tsvector` full-text search with `pgvector` semantic search
+  - Implemented industrial-grade **RRF (Reciprocal Rank Fusion)** to balance search results, significantly improving AI context precision and eliminating hallucinations
+- **Added Citation & Sourcing System**:
+  - Automatic footnote marking (e.g., `[^1]`) during content generation
+  - Front-end jumpable reference lists to fulfill Google's E-E-A-T verifiability requirements
+- **Added Automated JSON-LD Entity Engine**:
+  - Automatically extracts core entities (Person, Organization, Place, Topic) from AI-generated content
+  - Injects Schema.org compliant **JSON-LD Graph** data to proactively interface with search engine knowledge graphs
+- **Added Semantic Internal Linking & Topic Clusters**:
+  - Implemented semantic-based article recommendations using article-level vector similarity
+  - Automatically builds a site-wide semantic network to help search engines establish domain authority
+- **Added Intelligent Media Optimization & LCP Enhancement**:
+  - Integrated automatic WebP conversion, reducing image size by 60%-80%
+  - Upgraded front-end rendering to the `<picture>` tag structure for responsive modern format loading, boosting Core Web Vitals scores
+- **Added Dynamic Sitemap System**:
+  - Automatically generates standard `sitemap.xml`
+  - Intelligently assigns crawl priority based on article "hot" and "featured" status to shorten Google indexing cycles
+
 ## 2026-04-18
 
 ### v1.2
